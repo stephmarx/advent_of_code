@@ -5,10 +5,11 @@
 
 class PresentList
   def initialize(filename)
-    @raw_list = File.readlines('#{filename}')
+    @raw_list = File.readlines(filename)
     @presents = []
 
     create_presents
+    puts total_paper_required
   end
 
   def create_presents
@@ -16,6 +17,18 @@ class PresentList
       present_dimensions = present.split("x").map(&:to_i)
       @presents << Present.new(present_dimensions)
     end
+  end
+
+  def total_paper_required
+    paper_total = 0
+
+    @presents.each do |present|
+      # puts present.required_paper
+
+      paper_total += present.required_paper
+    end
+
+    return paper_total
   end
 end
 
@@ -48,3 +61,5 @@ end
 
 # ham = Present.new([2, 3, 4])
 # puts ham.required_paper
+
+list = PresentList.new('present_list.txt')
