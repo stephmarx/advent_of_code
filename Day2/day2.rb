@@ -1,8 +1,3 @@
-# array_of_presents = File.readlines('present_list.txt')
-# array_of_presents.each_with_index do |present, index|
-#   array[index] = present.split("x")
-# end
-
 class PresentList
   def initialize(filename)
     @raw_list = File.readlines(filename)
@@ -23,12 +18,10 @@ class PresentList
     paper_total = 0
 
     @presents.each do |present|
-      # puts present.required_paper
-
       paper_total += present.required_paper
     end
 
-    return paper_total
+    paper_total
   end
 end
 
@@ -39,14 +32,20 @@ class Present
     @length = present_dimensions[0]
     @width = present_dimensions[1]
     @height = present_dimensions[2]
-    @side_1_area = area_of_side(@length, @width)
-    @side_2_area = area_of_side(@width, @height)
-    @side_3_area = area_of_side(@height, @length)
+    @sides = determine_sides
     @required_paper = calculate_required_paper
   end
 
+  def determine_sides
+    sides = []
+    sides << area_of_side(@length, @width)
+    sides << area_of_side(@width, @height)
+    sides << area_of_side(@height, @length)
+    sides
+  end
+
   def calculate_required_paper
-    return 2*(@side_1_area + @side_2_area + @side_3_area) + area_of_smallest_side
+    2*(@sides.inject(:+)) + area_of_smallest_side
   end
 
   def area_of_side(a, b)
@@ -54,12 +53,9 @@ class Present
   end
 
   def area_of_smallest_side
-    [@side_1_area, @side_2_area, @side_3_area].min
+    @sides.min
   end
 
 end
-
-# ham = Present.new([2, 3, 4])
-# puts ham.required_paper
 
 list = PresentList.new('present_list.txt')
