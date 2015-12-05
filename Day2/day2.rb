@@ -96,6 +96,3 @@ class Present
 end
 
 list = PresentList.new('present_list.txt')
-
-# ham = Present.new([1, 1, 10])
-# puts ham.required_ribbon
