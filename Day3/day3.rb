@@ -57,7 +57,7 @@ class Trip
 end
 
 class House
-  attr_accessor :position, :presents
+  attr_reader :position, :presents
 
   def initialize(position)
     @position = position
