@@ -1,5 +1,7 @@
+# require 'pry-byebug'
+
 class Trip
-  attr_accessor :houses
+  attr_accessor :houses, :position
 
   def initialize(instructions)
     @instructions = instructions
@@ -13,39 +15,33 @@ class Trip
 
   def deliver_presents
     @instructions.split("").each do |char|
-      puts "Character is #{char}."
-      print_manifest
-
-      case char
-      when "<"
-        @position[0] -= 1
-      when ">"
-        @position[0] += 1
-      when "^"
-        @position[1] += 1
-      when "v"
-        @position[1] -= 1
-      end
-
-      print_manifest
-
+      move_position(char)
       deliver_present_to_house
     end
   end
 
+  def move_position(char)
+    case char
+    when "<"
+      @position[0] -= 1
+    when ">"
+      @position[0] += 1
+    when "^"
+      @position[1] += 1
+    when "v"
+      @position[1] -= 1
+    end
+  end
+
   def deliver_present_to_house
-    # print_manifest
     @houses.each do |house|
       if house.position == @position
         house.deliver_present
-        puts "I have delivered one present to the house at #{house.position}."
         return nil
       end
     end
 
-    @houses << House.new(@position)
-    puts "I have created a new house at #{@position}"
-    print_manifest
+    @houses << House.new(@position.clone)
   end
 
   def print_manifest
@@ -70,7 +66,7 @@ class House
 
 end
 
-trip = Trip.new("><")
+trip = Trip.new("vv")
 
 
 
