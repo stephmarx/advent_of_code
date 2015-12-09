@@ -1,16 +1,14 @@
-# require 'pry-byebug'
-
 class Trip
   attr_accessor :houses, :position
 
-  def initialize(instructions)
-    @instructions = instructions
+  def initialize(filename)
+    @instructions = File.open(filename, "rb").read
     @houses = []
     @position = [0, 0]
 
     @houses << House.new([0, 0])
     deliver_presents
-    print_manifest
+    print_house_count
   end
 
   def deliver_presents
@@ -50,6 +48,10 @@ class Trip
     end
   end
 
+  def print_house_count
+    puts "#{@houses.length} houses received at least one present."
+  end
+
 end
 
 class House
@@ -66,27 +68,4 @@ class House
 
 end
 
-trip = Trip.new("vv")
-
-
-
-
-# steve = House.new([0, 0])
-# # steve.deliver_present
-# # steve.deliver_present
-#
-# karen = House.new([0, 1])
-# # karen.deliver_present
-#
-# houses = [steve, karen]
-#
-# position = [0, 0]
-# houses.each do |house|
-#   if house.position == position
-#     house.deliver_present
-#   end
-# end
-#
-# houses.each do |house|
-#   puts house.presents
-# end
+trip = Trip.new('input.txt')
